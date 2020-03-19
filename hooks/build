@@ -1,0 +1,14 @@
+#!/bin/bash
+
+version="${SOURCE_BRANCH}"
+flavour=""
+if [ -z "${DOCKER_TAG##*-alpine*}" ]; then
+    flavour="-alpine"
+fi
+
+echo "[***] building PHP base image version $version - ${flavour:-vanilla}"
+
+docker build \
+    --build-arg VERSION=$version \
+    --build-arg FLAVOUR=$flavour \
+    -t $IMAGE_NAME .
