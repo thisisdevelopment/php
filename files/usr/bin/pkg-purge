@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -eu
+
+source /etc/os-release
+if [ "$ID" = "debian" ] || [ "$ID" = "ubuntu" ]; then
+    apt-get purge -y $@ && apt-get autoremove -y --purge
+elif [ "$ID" = "alpine" ]; then
+    apk del --no-cache --purge $@
+fi

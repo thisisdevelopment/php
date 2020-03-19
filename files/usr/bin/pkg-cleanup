@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -eu
+
+source /etc/os-release
+if [ "$ID" = "debian" ] || [ "$ID" = "ubuntu" ]; then
+    rm -rf /var/lib/apt/lists/*
+elif [ "$ID" = "alpine" ]; then
+    apk del --no-cache --purge $@
+fi
+

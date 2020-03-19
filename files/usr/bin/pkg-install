@@ -1,0 +1,40 @@
+#!/bin/sh
+
+set -eu
+
+function replace_packages_debian()
+{
+    while
+        case "$1" in
+            mysql-client)
+                echo -n "default-mysql-client "
+                ;;
+             shadow|pcre)
+                ;;
+              *)
+                echo -n "$1 "
+                ;;
+        esac
+        shift
+        (( $# > 0 ))
+    do
+        continue
+    done
+}
+
+source /etc/os-release
+if [ "$ID" = "debian" ] || [ "$ID" = "ubuntu" ]; then
+
+    packages=$(replace_packages_debian $@)
+    apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -o Dpkg::Options::="--force-confold" -y -q --no-install-recommends $packages
+elif [ "$ID" = "alpine" ]; then
+    apk add --no-cache --update $@
+else
+    echo "Unsupported install: $ID"
+    exit 1
+fi
+
+
+
+
+
