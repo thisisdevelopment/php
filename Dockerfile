@@ -29,17 +29,19 @@ COPY --from=overlay / /
 RUN set -eux; \
     chmod u+s,g+s /usr/bin/docker-user-init; \
     install-php-extensions ${PHP_EXTENSIONS}; \
-    pkg-install pcre shadow dumb-init bash ${EXTRA_PACKAGES}; \
+    pkg-install runit libcap pcre shadow dumb-init bash ${EXTRA_PACKAGES}; \
     pkg-purge ${PHPIZE_DEPS}; \
     pkg-cleanup; \
+    setcap cap_net_bind_service=+ep /usr/sbin/nginx; \
     composer global require hirak/prestissimo; \
     cp -a /usr/local/etc/php/* /etc/php/; \
     rm -f /etc/php/conf.d/docker-php-ext-xdebug.ini; \
     mv /etc/php/php.ini-production /etc/php/php.ini; \
     rm -rf /var/www/*; \
-    mkdir /home/www; \
-    chown -R -h ${DOCKER_USER} /home/www /var/www;
+    mkdir -p /home/www /var/log/nginx; \
+    chown -R -h ${DOCKER_USER} /home/www /var/www /etc/service /var/log/nginx; \
+    [ -f /sbin/runsvdir ] || ln -s /usr/bin/runsvdir /sbin/;
 
 USER ${DOCKER_USER}
 ENTRYPOINT ["/usr/bin/docker-user-init", "--"]
-CMD ["php-fpm"]
+CMD ["/sbin/runsvdir", "-P", "/etc/service"]
