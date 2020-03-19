@@ -2,29 +2,29 @@
 
 set -eu
 
-function replace_packages_debian()
+replace_packages_debian()
 {
-    while
+    while true; do
         case "$1" in
             mysql-client)
                 echo -n "default-mysql-client "
                 ;;
-             shadow|pcre)
+            libcap)
+                echo -n "libcap2-bin "
                 ;;
-              *)
+            shadow|pcre)
+                ;;
+            *)
                 echo -n "$1 "
                 ;;
         esac
         shift
-        (( $# > 0 ))
-    do
-        continue
+        [ $# -gt 0 ] || break
     done
 }
 
-source /etc/os-release
+. /etc/os-release
 if [ "$ID" = "debian" ] || [ "$ID" = "ubuntu" ]; then
-
     packages=$(replace_packages_debian $@)
     apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -o Dpkg::Options::="--force-confold" -y -q --no-install-recommends $packages
 elif [ "$ID" = "alpine" ]; then
@@ -33,8 +33,3 @@ else
     echo "Unsupported install: $ID"
     exit 1
 fi
-
-
-
-
-

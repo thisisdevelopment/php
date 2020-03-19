@@ -2,7 +2,7 @@
 
 set -eu
 
-source /etc/os-release
+. /etc/os-release
 if [ "$ID" = "debian" ] || [ "$ID" = "ubuntu" ]; then
     apt-get purge -y $@ && apt-get autoremove -y --purge
 elif [ "$ID" = "alpine" ]; then
