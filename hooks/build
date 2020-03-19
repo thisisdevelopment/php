@@ -6,9 +6,17 @@ if [ -z "${DOCKER_TAG##*-alpine*}" ]; then
     flavour="-alpine"
 fi
 
-echo "[***] building PHP base image version $version - ${flavour:-vanilla}"
+echo "[***] building PHP base image version $version - ${flavour:-vanilla} (${DOCKER_TAG})"
+
+IFS=',' read -ra tags <<< "$DOCKER_TAG"
+TAG_ARGS=""
+
+for tag in "${tags[@]}"
+do
+    TAG_ARGS="$TAG_ARGS -t $DOCKER_REPO:$tag"
+done
 
 docker build \
     --build-arg VERSION=$version \
     --build-arg FLAVOUR=$flavour \
-    -t $IMAGE_NAME .
+    $TAG_ARGS .
