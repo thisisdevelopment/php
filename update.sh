@@ -17,4 +17,5 @@ for release in 7.1 7.2 7.3 7.4; do
         echo "already up-to-date"
     fi
 done
-git push --tags
+git push --tags --force
+
