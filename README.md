@@ -7,7 +7,7 @@ This image contains:
 - nginx:stable
 - composer:latest
 - node:lts (for webpack builds etc)
-- php-fpm:7.X with the following extensions enabled
+- php-fpm:7.X with the following extra extensions enabled
   - amqp 
   - bcmath
   - bz2 
@@ -24,6 +24,9 @@ This image contains:
   - soap
   - sockets
   - tidy
+  - xsl
+  - yaml
   - zip
   - xdebug (available, but not enabled)
+  
   

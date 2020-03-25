@@ -1,6 +1,9 @@
 name: check php releases
 
 on:
+  push:
+    branches:
+      - master
   schedule:
     - cron:  '0 5 * * *'
 
