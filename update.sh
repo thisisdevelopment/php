@@ -1,7 +1,7 @@
 #!/bin/bash
 
 for release in 7.1 7.2 7.3 7.4; do
-    version=$(curl -vo- "https://www.php.net/releases/?json&version=${release}" 2>curl.log | tee curl.out | jq -r '.version');
+    version=$(curl -4 -vso- "https://www.php.net/releases/?json&version=${release}" 2>curl.log | tee curl.out | jq -r '.version');
     if [ -z "${version}" ]; then
         cat curl.log
         cat curl.out
@@ -27,4 +27,3 @@ for release in 7.1 7.2 7.3 7.4; do
     fi
 done
 git push --tags --force
-
