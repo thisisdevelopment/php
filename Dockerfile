@@ -20,8 +20,8 @@ FROM php:${VERSION}${FLAVOUR}
 WORKDIR /var/www
 
 ENV \
-  PHP_EXTENSIONS="amqp bcmath bz2 calendar exif gettext imagick intl mysqli opcache pcntl pdo_mysql redis soap sockets tidy xdebug xsl yaml zip" \
-  EXTRA_PACKAGES="unzip mysql-client nano joe vim" \
+  PHP_EXTENSIONS="amqp bcmath bz2 calendar exif gd gettext imagick intl mysqli opcache pcntl pdo_mysql redis soap sockets tidy xdebug xsl yaml zip" \
+  EXTRA_PACKAGES="lsof unzip mysql-client nano joe vim" \
   DOCKER_USER="www-data:www-data"
 
 COPY --from=overlay / /

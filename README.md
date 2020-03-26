@@ -13,6 +13,7 @@ This image contains:
   - bz2 
   - calendar
   - exif
+  - gd
   - gettext
   - imagick
   - intl 
@@ -28,5 +29,5 @@ This image contains:
   - yaml
   - zip
   - xdebug (available, but not enabled)
-  
+
   
