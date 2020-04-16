@@ -5,6 +5,9 @@ flavour=""
 if [ -z "${DOCKER_TAG##*-alpine*}" ]; then
     flavour="-alpine"
 fi
+if [ -z "${DOCKER_TAG##*-fpm*}" ]; then
+    version="${version}-fpm"
+fi
 
 echo "[***] building PHP base image version $version - ${flavour:-vanilla} (${DOCKER_TAG})"
 
