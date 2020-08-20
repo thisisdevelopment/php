@@ -12,6 +12,9 @@ replace_packages_debian()
             libcap)
                 echo -n "libcap2-bin "
                 ;;
+            grpc)
+                echo -n "protobuf-compiler-grpc "
+                ;;
             shadow|pcre)
                 ;;
             *)

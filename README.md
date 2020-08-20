@@ -15,12 +15,14 @@ This image contains:
   - exif
   - gd
   - gettext
+  - grpc
   - imagick
   - intl 
   - mysqli
   - opcache
   - pcntl
   - pdo_mysql
+  - protobuf
   - redis
   - soap
   - sockets
@@ -29,5 +31,11 @@ This image contains:
   - yaml
   - zip
   - xdebug (available, but not enabled)
-
+- with the following utils installed
+  - lsof
+  - unzip
+  - mysql-client
+  - nano + joe + vim 
+  - git
+  - protoc + grpc language plugins
   
