@@ -22,7 +22,8 @@ WORKDIR /var/www
 ENV \
   PHP_EXTENSIONS="amqp bcmath bz2 calendar exif gd gettext grpc imagick intl mysqli opcache pcntl pdo_mysql protobuf redis soap sockets tidy xdebug xsl yaml zip" \
   EXTRA_PACKAGES="lsof unzip mysql-client nano joe vim git grpc" \
-  DOCKER_USER="www-data:www-data"
+  DOCKER_USER="www-data:www-data" \
+  COMPOSER_MEMORY_LIMIT="-1"
 
 COPY --from=overlay / /
 
@@ -33,10 +34,9 @@ RUN set -eux; \
     pkg-purge ${PHPIZE_DEPS}; \
     pkg-cleanup; \
     setcap cap_net_bind_service=+ep /usr/sbin/nginx; \
-    composer global require hirak/prestissimo; \
-    cp -a /usr/local/etc/php/* /etc/php/; \
-    rm -f /etc/php/conf.d/docker-php-ext-xdebug.ini; \
-    mv /etc/php/php.ini-production /etc/php/php.ini; \
+    rm -f $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini; \
+    mv $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini; \
+    mv /app.ini $PHP_INI_DIR/conf.d/app.ini; \
     rm -rf /var/www/*; \
     mkdir -p /home/www /var/log/nginx; \
     chown -R -h ${DOCKER_USER} /home/www /var/www /etc/service /var/log/nginx; \
