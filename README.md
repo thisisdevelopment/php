@@ -7,7 +7,7 @@ This image contains:
 - nginx:stable
 - composer:latest
 - node:lts (for webpack builds etc)
-- php-fpm:7.X with the following extra extensions enabled
+- php-fpm with the following extra extensions enabled
   - amqp 
   - bcmath
   - bz2 
