@@ -35,6 +35,7 @@ RUN set -eux; \
     pkg-cleanup; \
     setcap cap_net_bind_service=+ep /usr/sbin/nginx; \
     rm -f $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini; \
+    rm -f $PHP_INI_DIR/conf.d/docker-php-ext-protobuf.ini; \
     mv $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini; \
     mv /app.ini $PHP_INI_DIR/conf.d/app.ini; \
     rm -rf /var/www/*; \
