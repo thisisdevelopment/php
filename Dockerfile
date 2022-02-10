@@ -3,12 +3,13 @@ ARG FLAVOUR=""
 
 FROM node:lts${FLAVOUR} AS node_lts
 FROM nginx:stable${FLAVOUR} AS nginx_stable
+FROM composer:2.1 AS composer_stable
 FROM thisisdevelopment/docker-user-init:latest${FLAVOUR} AS docker-user-init
 FROM scratch AS overlay
 
 COPY --from=docker-user-init /docker-user-init /usr/bin/
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+COPY --from=composer_stable /usr/bin/composer /usr/bin/composer
 COPY --from=node_lts /usr/local /usr/local
 COPY --from=node_lts /opt/yarn* /opt/
 COPY --from=nginx_stable /usr/sbin/nginx* /usr/sbin/
