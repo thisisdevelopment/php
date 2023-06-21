@@ -1,20 +1,20 @@
-ARG VERSION=7.4-fpm
+ARG VERSION=""
 ARG FLAVOUR=""
 
 FROM node:lts${FLAVOUR} AS node_lts
-FROM nginx:stable${FLAVOUR} AS nginx_stable
-FROM composer:2.1 AS composer_stable
+FROM nginx:mainline${FLAVOUR} AS nginx_mainline
+FROM composer:lts AS composer_lts
 FROM thisisdevelopment/docker-user-init:latest${FLAVOUR} AS docker-user-init
 FROM scratch AS overlay
 
 COPY --from=docker-user-init /docker-user-init /usr/bin/
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
-COPY --from=composer_stable /usr/bin/composer /usr/bin/composer
+COPY --from=composer_lts /usr/bin/composer /usr/bin/composer
 COPY --from=node_lts /usr/local /usr/local
 COPY --from=node_lts /opt /opt
-COPY --from=nginx_stable /usr/sbin/nginx* /usr/sbin/
-COPY --from=nginx_stable /usr/lib/nginx /usr/lib/nginx
-COPY --from=nginx_stable /etc/nginx /etc/nginx
+COPY --from=nginx_mainline /usr/sbin/nginx* /usr/sbin/
+COPY --from=nginx_mainline /usr/lib/nginx /usr/lib/nginx
+COPY --from=nginx_mainline /etc/nginx /etc/nginx
 COPY files /
 
 FROM php:${VERSION}${FLAVOUR}
