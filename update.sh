@@ -1,6 +1,6 @@
 #!/bin/bash
 
-releases=$(curl --retry 5 --retry-delay 10 -4 -vso- "https://www.php.net/releases/?json" 2>curl.log | tee curl.out | jq '. | to_entries | .[] | select(.value.tags | index("security")) | if .value.supported_versions | length == 0 then [.value.version[0:3]] else .value.supported_versions end' | jq -rs 'add | sort | join(" ")')
+releases=$(curl --retry 5 --retry-delay 10 -4 -vso- "https://www.php.net/releases/?json" 2>curl.log | tee curl.out | jq 'to_entries | .[] | select(if .value.supported_versions | length == 0 then .value.tags | index("security") else true end) | if .value.supported_versions | length == 0 then [.value.version[0:3]] else .value.supported_versions end' | jq -rs 'add | sort | reverse | join(" ")')
 if [ -z "${releases}" ]; then
     cat curl.log
     cat curl.out
