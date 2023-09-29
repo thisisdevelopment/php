@@ -20,8 +20,10 @@ for release in $releases; do
         rm -f curl.log
         rm -f curl.out
     fi
-    
+
     echo -n "${version} -- "
+    docker manifest inspect php:$version 2>/dev/null 1>/dev/null || (c=$?; echo "no upstream docker image found"; exit $c) || continue
+    
     tag=$(git tag -l "${version}")
     if [ -z "${tag}" ]; then
         # create tag
