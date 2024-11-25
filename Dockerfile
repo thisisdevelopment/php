@@ -31,8 +31,7 @@ COPY --from=overlay / /
 
 RUN set -eux; \
     chmod u+s,g+s /usr/bin/docker-user-init; \
-    [[ ! "${VERSION}" =~ "^8\.4" ]] && install-php-extensions ${PHP_EXTENSIONS} xdebug; \
-    [[ "${VERSION}" =~ "^8\.4" ]] && install-php-extensions ${PHP_EXTENSIONS} xdebug-beta; \
+    if expr "${VERSION}" : "^8\.4" >/dev/null 2>&1; then install-php-extensions ${PHP_EXTENSIONS} xdebug-beta; else install-php-extensions ${PHP_EXTENSIONS} xdebug; fi; \
     pkg-install runit libcap pcre shadow dumb-init bash ${EXTRA_PACKAGES}; \
     pkg-purge ${PHPIZE_DEPS}; \
     pkg-cleanup; \
