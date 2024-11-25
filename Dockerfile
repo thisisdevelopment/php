@@ -18,10 +18,11 @@ COPY --from=nginx_mainline /etc/nginx /etc/nginx
 COPY files /
 
 FROM php:${VERSION}${FLAVOUR}
+ARG VERSION
 WORKDIR /var/www
 
 ENV \
-  PHP_EXTENSIONS="amqp bcmath bz2 calendar exif gd gettext grpc imagick intl mysqli opcache pcntl pdo_mysql protobuf redis soap sockets tidy xdebug xsl yaml zip" \
+  PHP_EXTENSIONS="amqp bcmath bz2 calendar exif gd gettext grpc imagick intl mysqli opcache pcntl pdo_mysql protobuf redis soap sockets tidy xsl yaml zip" \
   EXTRA_PACKAGES="lsof unzip mysql-client nano joe vim git grpc" \
   DOCKER_USER="www-data:www-data" \
   COMPOSER_MEMORY_LIMIT="-1"
@@ -30,7 +31,8 @@ COPY --from=overlay / /
 
 RUN set -eux; \
     chmod u+s,g+s /usr/bin/docker-user-init; \
-    install-php-extensions ${PHP_EXTENSIONS}; \
+    [[ ! "${VERSION}" =~ "^8\.4" ]] && install-php-extensions ${PHP_EXTENSIONS} xdebug; \
+    [[ "${VERSION}" =~ "^8\.4" ]] && install-php-extensions ${PHP_EXTENSIONS} xdebug-beta; \
     pkg-install runit libcap pcre shadow dumb-init bash ${EXTRA_PACKAGES}; \
     pkg-purge ${PHPIZE_DEPS}; \
     pkg-cleanup; \
