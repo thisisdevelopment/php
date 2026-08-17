@@ -22,7 +22,7 @@ ARG VERSION
 WORKDIR /var/www
 
 ENV \
-  PHP_EXTENSIONS="amqp bcmath bz2 calendar exif gd gettext grpc imagick intl mysqli opcache pcntl pdo_mysql protobuf redis soap sockets tidy xsl yaml zip" \
+  PHP_EXTENSIONS="amqp bcmath bz2 calendar exif gd gettext grpc imagick intl mysqli opcache pcntl pdo_mysql protobuf redis soap sockets tidy xsl yaml zip pcov" \
   EXTRA_PACKAGES="lsof unzip mysql-client nano joe vim git grpc" \
   DOCKER_USER="www-data:www-data" \
   COMPOSER_MEMORY_LIMIT="-1"
